@@ -1,45 +1,31 @@
 # 20/10 Pixel Arcade — Lucky Gift Claw Machine
 
-A mobile-first digital gift claw machine for Vietnamese Women's Day. Built with React, TypeScript, Vite, SVG and CSS; no backend, login, API key or paid service is required.
+A small mobile-friendly pixel-art claw machine for Vietnamese Women's Day. Built with plain **HTML, CSS, JavaScript and JSON**. No Node.js, npm, React, TypeScript, build tools, API keys or backend.
 
-## Run locally
+## Run it
 
-Requirements: Node.js 20.19+ or 22.12+.
+1. Open this repository in GitHub Codespaces or download the files.
+2. Use the VS Code **Live Server** extension to open `index.html`.
+3. If using GitHub Pages, publish the repository from **Settings → Pages**. The game is static and can run without a build step.
 
-```bash
-npm install
-npm run dev
-```
+> Do not open `index.html` as a direct `file://` URL if the browser blocks loading JSON. Use Live Server or a static web host so `rewards.json` can be fetched.
 
-Open the local URL printed by Vite.
+## Customize the gifts
 
-## Build and preview
+Edit `rewards.json`. Each item has:
+- `name`: gift title
+- `emoji`: icon shown in the reward popup
+- `rarity` and `rarityLabel`: category labels
+- `weight`: relative chance of being selected
+- `message`: the greeting shown to the player
 
-```bash
-npm run build
-npm run preview
-```
+The weights currently total 100. They are relative probabilities; update them as you like.
 
-The production site is generated in `dist/`.
+## Controls
 
-## Deploy free
+- Move the claw with the on-screen left/right buttons or keyboard arrow keys / A and D.
+- Press **GRAB** (or Space) to try to catch a gift.
+- A successful catch opens a gift and its greeting.
+- Use **Sao chép lời chúc** to copy the greeting.
 
-- **Netlify:** import this GitHub repository, set build command to `npm run build`, publish directory to `dist`.
-- **Vercel:** import the repository; Vite is detected automatically. Use `npm run build` and `dist` if prompted.
-
-## Customize rewards
-
-Edit `src/rewards.ts`. The ten reward records contain name, rarity, weight, emoji, color and message. `validateRewardWeights()` checks that weights add up to 100%; `weightedRandomReward()` throws if configuration is invalid.
-
-## Controls and game rules
-
-- Hold the left/right touch buttons to move the claw, or use keyboard arrow keys.
-- Press **GRAB**, Space or Enter to run the grab sequence.
-- The claw must be aligned within 38 SVG units of a gift. A valid target has a 78% success chance; a miss does not award a reward.
-- Reward weighted random is evaluated only after a successful grab.
-- Sound is opt-in and synthesized using Web Audio API.
-- Share uses the browser Web Share API when available, otherwise attempts clipboard copy.
-
-## Notes
-
-This is a client-only experience. Play count is local to the current page session; it is not a company-wide counter. Each visitor's outcome is independent. The current art uses native SVG and emoji glyphs, so emoji appearance can vary by operating system. Run `npm run build` before deployment.
+Everything runs in the visitor's browser. Play counts are per page session; there is no shared counter or database.

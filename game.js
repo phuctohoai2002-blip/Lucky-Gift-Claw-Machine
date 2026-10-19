@@ -27,7 +27,7 @@ const prizePalette = ["#ff83b4", "#ffe27a", "#b6a1ff", "#8de0c1", "#ffad76", "#f
 const state = {
   clawX: 160, clawY: 66, phase: "idle",
   targetX: 160, targetY: 240, selectedPrize: null,
-  grabbedIndex: -1, lastTime: 0, resultTimer: 0, particles: [],
+  grabbedIndex: -1, grabSuccess: false, lastTime: 0, resultTimer: 0, particles: [],
   prizes: []
 };
 
@@ -190,7 +190,7 @@ function drawClaw() {
   rect(state.clawX - 9, state.clawY + 2, 18, 7, "#8c5ea7");
   rect(state.clawX - 4, state.clawY + 2, 8, 4, "#ffe58a");
 
-  if (["rising", "dropping", "result"].includes(state.phase) && state.selectedPrize) {
+  if (state.grabSuccess && ["rising", "dropping", "result"].includes(state.phase) && state.selectedPrize) {
     drawPrize(state.selectedPrize, state.clawX, state.clawY + 19, Math.min(23, state.selectedPrize.size || 25));
   }
 
@@ -261,9 +261,15 @@ function update(dt) {
     if (Math.abs(state.targetX - state.clawX) < 2 && state.clawY >= state.targetY) {
       state.clawX = state.targetX;
       state.clawY = state.targetY;
+      // Simulate whether the claw actually holds the prize.
+      state.grabSuccess = Math.random() < 0.75;
       state.phase = "rising";
-      state.grabbedIndex = state.prizes.indexOf(state.selectedPrize);
-      statusEl.textContent = "ĐANG KÉO QUÀ LÊN...";
+      state.grabbedIndex = state.grabSuccess
+        ? state.prizes.indexOf(state.selectedPrize)
+        : -1;
+      statusEl.textContent = state.grabSuccess
+        ? "ĐANG KÉO QUÀ LÊN..."
+        : "ÔI, QUÀ RƠI MẤT RỒI!";
     }
   } else if (state.phase === "rising") {
     state.clawY -= 175 * dt;
@@ -271,16 +277,25 @@ function update(dt) {
       state.clawY = 66;
       state.phase = "dropping";
       state.resultTimer = .35;
-      statusEl.textContent = "MỞ QUÀ NÀO!";
-      createBurst(state.clawX, 95);
+      if (state.grabSuccess) {
+        state.resultPrize = chooseRandomReward(state.prizes);
+        statusEl.textContent = "MỞ QUÀ NÀO!";
+        createBurst(state.clawX, 95);
+      }
     }
   } else if (state.phase === "dropping") {
     state.resultTimer -= dt;
     if (state.resultTimer <= 0) {
       state.phase = "result";
-      statusEl.textContent = "GẮP QUÀ THÀNH CÔNG!";
-      prizeTitle.textContent = state.resultPrize.name;
-      prizeText.textContent = state.resultPrize.detail;
+      if (state.grabSuccess) {
+        statusEl.textContent = "GẮP QUÀ THÀNH CÔNG!";
+        prizeTitle.textContent = state.resultPrize.name;
+        prizeText.textContent = state.resultPrize.detail;
+      } else {
+        statusEl.textContent = "GẮP KHÔNG TRÚNG!";
+        prizeTitle.textContent = "GẮP KHÔNG TRÚNG!";
+        prizeText.textContent = "Ôi, quà tuột khỏi càng gắp mất rồi. Thử lại nhé!";
+      }
       resultModal.hidden = false;
       document.getElementById("closeResultBtn").focus();
     }
@@ -317,6 +332,8 @@ function resetAfterResult() {
   state.clawX = 160;
   state.selectedPrize = null;
   state.grabbedIndex = -1;
+  state.grabSuccess = false;
+  state.resultPrize = null;
   state.particles = [];
   statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
 }
@@ -364,7 +381,8 @@ document.getElementById("grabBtn").addEventListener("click", () => {
   const closestIndex = itemSpots.reduce((best, spot, i) =>
     Math.abs(spot.x - state.clawX) < Math.abs(itemSpots[best].x - state.clawX) ? i : best, 0);
   state.selectedPrize = state.prizes[closestIndex];
-  state.resultPrize = chooseRandomReward(state.prizes);
+  state.grabSuccess = false;
+  state.resultPrize = null;
   state.grabbedIndex = -1;
   state.targetX = itemSpots[closestIndex].x;
   state.targetY = Math.max(218, itemSpots[closestIndex].y - 30);

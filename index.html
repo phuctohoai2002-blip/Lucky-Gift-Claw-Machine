@@ -22,44 +22,39 @@
         <span class="brand">LUCKY PIXEL</span>
         <span class="lights" aria-hidden="true">● ● ●</span>
       </div>
-
       <div class="window">
         <canvas id="game" width="320" height="360" aria-label="Máy gắp các món quà pixel"></canvas>
       </div>
-
       <div class="control-panel">
         <div class="status" aria-live="polite">
           <span class="status-light"></span>
           <span id="status">ĐANG TẢI QUÀ...</span>
         </div>
-
         <div class="buttons">
           <button id="leftBtn" class="arrow-btn" aria-label="Di chuyển càng gắp sang trái">◀</button>
           <button id="grabBtn" class="grab-btn">✦ GẮP QUÀ ✦</button>
           <button id="rightBtn" class="arrow-btn" aria-label="Di chuyển càng gắp sang phải">▶</button>
         </div>
-
         <p class="hint">Di chuyển càng gắp rồi nhấn GẮP QUÀ</p>
       </div>
-
       <div class="machine-base">
         <div class="speaker" aria-hidden="true">▮ ▮ ▮ ▮ ▮</div>
         <div class="coin-slot" aria-hidden="true"></div>
         <div class="base-label">GOOD LUCK!</div>
       </div>
     </section>
+    <footer>MADE WITH PIXEL LOVE · 20/10</footer>
+  </main>
 
-    <section id="prizePanel" class="prize-panel" hidden aria-live="polite">
+  <div id="prizeOverlay" class="prize-overlay" hidden>
+    <section id="prizePanel" class="prize-panel" role="dialog" aria-modal="true" aria-labelledby="prizeTitle" aria-live="polite">
       <div class="sparkles" aria-hidden="true">✦ ✧ ★ ✧ ✦</div>
       <p class="prize-kicker">BẠN GẮP ĐƯỢC MÓN QUÀ</p>
       <h2 id="prizeTitle">BẠN ĐÃ NHẬN ĐƯỢC QUÀ!</h2>
       <p id="prizeText"></p>
-      <button id="againBtn" class="grab-btn">CHƠI LẠI</button>
+      <button id="againBtn" class="grab-btn">GẮP TIẾP</button>
     </section>
-
-    <footer>MADE WITH PIXEL LOVE · 20/10</footer>
-  </main>
-
+  </div>
   <script src="game.js"></script>
 </body>
 </html>

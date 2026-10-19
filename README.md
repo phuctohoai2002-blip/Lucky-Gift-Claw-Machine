@@ -5,8 +5,10 @@ A small, mobile-friendly pixel-art claw machine for Vietnamese Women's Day. Buil
 ## Files
 
 - `index.html` — page structure
-- `style.css` — retro pixel-art styling and responsive layout
-- `game.js` — canvas drawing, claw controls, pickup animation and reward reveal
+- `style.css` — retro pixel-art styling, custom fonts, responsive no-scroll layout, and popup styling
+- `font/kvn-97.ttf` — display font for the main headings
+- `font/0307-LNTH-TwistyPixel.ttf` — interface font for all other text
+- `game.js` — canvas drawing, randomized prize appearance, claw controls, pickup animation, and randomized reward reveal
 - `rewards.json` — editable prize types, colors, sizes, probabilities and greetings
 
 ## Run it
@@ -24,10 +26,10 @@ Edit `rewards.json`. Each prize has:
 - `weight`: relative selection chance
 - `rarity`: `common` or `rare`
 
-The current machine displays a mix of prize shapes, not just gift boxes. Keep ten entries to fill all display positions.
+The current machine displays a mix of prize shapes, not just gift boxes. Prize size, color, placement, and tilt vary randomly each load. The result greeting is selected independently on every successful grab, so the same visible object can lead to different results. Keep ten entries to fill all display positions.
 
 ## Controls
 
-Use the left/right buttons or keyboard arrow keys to position the claw, then press **GẮP QUÀ** or Space. The claw moves to the nearest item, descends, picks it up, lifts it, and reveals the greeting. **CHƠI LẠI** resets the game.
+Use the left/right buttons or keyboard arrow keys to position the claw, then press **GẮP QUÀ** or Space. The claw moves to the nearest item, descends, picks it up, lifts it, and reveals a randomized greeting in a popup. Use **? CÁCH GẮP QUÀ** for the instruction popup. The interface fits the viewport without page scrolling.
 
 All gameplay runs in the visitor's browser. There is no shared score counter or database.

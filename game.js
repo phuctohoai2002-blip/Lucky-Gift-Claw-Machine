@@ -180,7 +180,7 @@ function drawClaw() {
   rect(state.clawX - 9, state.clawY + 2, 18, 7, "#8c5ea7");
   rect(state.clawX - 4, state.clawY + 2, 8, 4, "#ffe58a");
 
-  if ((state.phase === "rising" || state.phase === "result") && state.selectedPrize) {
+  if (["rising", "dropping", "result"].includes(state.phase) && state.selectedPrize) {
     drawPrize(state.selectedPrize, state.clawX, state.clawY + 19, Math.min(23, state.selectedPrize.size || 25));
   }
 
@@ -228,7 +228,7 @@ function drawScene(dt) {
   rect(20, 259, 280, 4, "#8e65af");
 
   state.prizes.forEach((prize, i) => {
-    if (i === state.grabbedIndex && (state.phase === "rising" || state.phase === "result")) return;
+    if (i === state.grabbedIndex && ["rising", "dropping", "result"].includes(state.phase)) return;
     const spot = itemSpots[i % itemSpots.length];
     const bob = state.phase === "idle" ? Math.sin(performance.now() / 500 + i) * 1.5 : 0;
     drawPrize(prize, spot.x, spot.y + bob);

@@ -1,4 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@600;700;800;900&display=swap');
+@font-face {
+  font-family: "KVN97";
+  src: url("font/kvn-97.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "TwistyPixel";
+  src: url("font/0307-LNTH-TwistyPixel.ttf") format("truetype");
+  font-display: swap;
+}
 
 :root {
   --background: #21172f;
@@ -7,15 +16,22 @@
   --pink: #ff8fba;
   --yellow: #ffe58a;
   --cream: #fff5df;
+  --body-font: "TwistyPixel", "Trebuchet MS", sans-serif;
+  --heading-font: "KVN97", "Trebuchet MS", sans-serif;
 }
 
 * { box-sizing: border-box; }
 
-body {
+html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  min-height: 100vh;
+  overflow: hidden;
+}
+
+body {
   color: var(--cream);
-  font-family: "Nunito", sans-serif;
+  font-family: var(--body-font);
   background-color: var(--background);
   background-image:
     linear-gradient(#ffffff08 1px, transparent 1px),
@@ -24,91 +40,124 @@ body {
   background-size: 16px 16px, 16px 16px, auto;
 }
 
+button { font-family: var(--body-font); }
+button:active { transform: translateY(2px); }
+button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+
 .page {
-  width: min(100% - 24px, 480px);
-  margin: auto;
-  padding: 30px 0 24px;
+  width: min(100%, 540px);
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(6px, 1.6vh, 16px) 12px clamp(5px, 1vh, 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-evenly;
+  gap: clamp(4px, 1vh, 10px);
+  overflow: hidden;
 }
 
-.hero { text-align: center; margin-bottom: 24px; }
-
+.hero { flex: 0 0 auto; text-align: center; margin: 0; }
 .event-label {
   display: inline-block;
-  padding: 9px;
+  padding: 5px 8px;
   color: var(--yellow);
   border: 2px solid var(--yellow);
-  box-shadow: 4px 4px 0 #100a19;
-  font: 8px "Press Start 2P", monospace;
+  box-shadow: 3px 3px 0 #100a19;
+  font-size: clamp(11px, 1.5vh, 15px);
+  letter-spacing: .08em;
 }
-
 h1 {
-  margin: 22px 0 14px;
-  font: clamp(22px, 7vw, 34px)/1.6 "Press Start 2P", monospace;
-  text-shadow: 4px 4px 0 #a34483;
+  margin: clamp(5px, 1.2vh, 12px) 0 2px;
+  font-family: var(--heading-font);
+  font-size: clamp(31px, 6vh, 54px);
+  line-height: 1.05;
+  letter-spacing: .02em;
+  text-shadow: 3px 3px 0 #a34483;
 }
 h1 span { color: var(--yellow); }
-
 .subtitle {
+  margin: 2px 0;
   color: var(--pink);
-  font: 9px/1.8 "Press Start 2P", monospace;
+  font-size: clamp(16px, 2.4vh, 23px);
+  line-height: 1.15;
+  letter-spacing: .05em;
 }
-.description { color: #e7d8f6; font-size: 14px; }
+.description {
+  margin: 3px 0 0;
+  color: #e7d8f6;
+  font-size: clamp(14px, 2vh, 18px);
+}
 
 .machine {
-  padding: 12px;
-  border: 4px solid #a78aca;
+  flex: 0 1 auto;
+  width: 100%;
+  min-height: 0;
+  padding: clamp(5px, 1.2vh, 10px);
+  border: 3px solid #a78aca;
   background: linear-gradient(135deg, #7c5aa1, #51336f);
-  box-shadow: 0 0 0 4px #261936, 0 10px 0 #130d1d, 0 18px 35px #100a19a8;
+  box-shadow: 0 0 0 3px #261936, 0 6px 0 #130d1d, 0 10px 22px #100a19a8;
+  display: flex;
+  flex-direction: column;
 }
-
 .machine-top {
-  height: 36px;
+  height: clamp(25px, 4vh, 34px);
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 5px;
-  padding: 0 8px;
+  gap: 4px;
+  padding: 0 6px;
   background: #342148;
-  border: 3px solid var(--dark);
+  border: 2px solid var(--dark);
   border-bottom: 0;
 }
-
 .brand {
   color: var(--yellow);
-  font: 8px "Press Start 2P", monospace;
+  font-size: clamp(12px, 1.7vh, 16px);
   white-space: nowrap;
+  letter-spacing: .04em;
 }
-.lights { color: var(--pink); font-size: 10px; letter-spacing: 2px; }
+.lights { color: var(--pink); font-size: 12px; letter-spacing: 1px; }
 
 .window {
-  border: 4px solid var(--dark);
+  flex: 1 1 auto;
+  min-height: 0;
+  border: 3px solid var(--dark);
   background: #191428;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 canvas {
   display: block;
   width: 100%;
   height: auto;
+  max-height: 34vh;
+  object-fit: contain;
   image-rendering: pixelated;
 }
 
 .control-panel {
-  padding: 12px 8px;
+  flex: 0 0 auto;
+  padding: clamp(5px, 1vh, 10px) 7px;
   background: #2d1e42;
-  border: 4px solid var(--dark);
+  border: 3px solid var(--dark);
   border-top: 0;
 }
-
 .status {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 26px;
-  margin-bottom: 12px;
+  gap: 7px;
+  min-height: 20px;
+  margin-bottom: clamp(4px, .8vh, 8px);
   color: #a8f0ce;
-  font: 8px "Press Start 2P", monospace;
-  line-height: 1.8;
+  font-size: clamp(13px, 1.7vh, 17px);
+  line-height: 1.15;
   text-align: center;
 }
 .status-light {
@@ -118,100 +167,169 @@ canvas {
   background: #8ce9c4;
   box-shadow: 0 0 8px #8ce9c4;
 }
-
 .buttons {
   display: grid;
-  grid-template-columns: 50px minmax(0, 1fr) 50px;
-  gap: 8px;
+  grid-template-columns: clamp(42px, 10vw, 52px) minmax(0, 1fr) clamp(42px, 10vw, 52px);
+  gap: 7px;
 }
-
-button {
-  border: 0;
-  cursor: pointer;
-  touch-action: manipulation;
-  font-family: "Press Start 2P", monospace;
-}
-button:active { transform: translateY(3px); }
-button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
-button:disabled { opacity: .55; cursor: not-allowed; }
-
+button { border: 0; cursor: pointer; touch-action: manipulation; }
 .arrow-btn {
-  min-height: 50px;
+  min-height: clamp(39px, 6.2vh, 52px);
   color: white;
   background: #8d68b4;
   border: 3px solid #c4a3e2;
-  box-shadow: 0 4px 0 #171020;
-  font-size: 18px;
+  box-shadow: 0 3px 0 #171020;
+  font-size: clamp(20px, 3vh, 27px);
 }
-
 .grab-btn {
-  min-height: 50px;
-  padding: 10px 6px;
+  min-height: clamp(39px, 6.2vh, 52px);
+  padding: 6px 8px;
   color: #3a214a;
   background: var(--yellow);
   border: 3px solid #fff0b8;
-  box-shadow: 0 4px 0 #171020;
-  font-size: 9px;
-  line-height: 1.8;
+  box-shadow: 0 3px 0 #171020;
+  font-size: clamp(15px, 2.1vh, 20px);
+  line-height: 1.1;
+  letter-spacing: .03em;
 }
-
-.hint {
-  margin: 13px 0 0;
-  color: #cdbbdd;
-  font-size: 12px;
-  text-align: center;
-}
-
-.machine-base {
-  min-height: 45px;
+.machine-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px;
+  margin-top: clamp(5px, .9vh, 9px);
+}
+.hint {
+  margin: 0;
+  color: #cdbbdd;
+  font-size: clamp(12px, 1.7vh, 16px);
+  line-height: 1.1;
+}
+.help-btn {
+  flex: 0 0 auto;
+  padding: 7px 8px;
+  color: var(--cream);
+  background: #51336f;
+  border: 2px solid #a78aca;
+  font-size: clamp(12px, 1.6vh, 15px);
+}
+.machine-base {
+  flex: 0 0 auto;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 8px;
   background: #4a2e67;
-  border: 4px solid var(--dark);
+  border: 3px solid var(--dark);
   border-top: 0;
 }
-.speaker { color: #21172f; font-size: 13px; letter-spacing: 1px; }
-.coin-slot { width: 32px; height: 10px; background: #1a1125; border: 2px solid #9b79bd; }
-.base-label { color: var(--yellow); font: 7px "Press Start 2P", monospace; white-space: nowrap; }
+.speaker { color: #21172f; font-size: 15px; letter-spacing: 1px; }
+.coin-slot { width: 28px; height: 8px; background: #1a1125; border: 2px solid #9b79bd; }
+.base-label { color: var(--yellow); font-size: 13px; white-space: nowrap; }
 
-.prize-panel {
-  margin-top: 24px;
-  padding: 22px 16px;
+footer {
+  flex: 0 0 auto;
+  color: #9f88b8;
   text-align: center;
+  font-size: clamp(10px, 1.4vh, 13px);
+  letter-spacing: .08em;
+}
+[hidden] { display: none !important; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #100a19d9;
+  overflow: auto;
+}
+.modal-card {
+  position: relative;
+  width: min(100%, 420px);
+  max-height: min(90dvh, 720px);
+  overflow-y: auto;
+  padding: clamp(22px, 4vh, 34px) clamp(17px, 5vw, 28px) 22px;
   color: #241735;
+  text-align: center;
   background: #ffd5e6;
   border: 4px solid white;
   box-shadow: 6px 6px 0 #100a19;
 }
-.prize-kicker {
-  color: #9d477d;
-  font: 8px/1.8 "Press Start 2P", monospace;
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  color: #241735;
+  background: transparent;
+  font-family: var(--body-font);
+  font-size: 28px;
+  line-height: 1;
 }
-.prize-panel h2 {
-  font: 11px/1.9 "Press Start 2P", monospace;
+.sparkles { color: #b34782; font-size: clamp(19px, 3vh, 27px); }
+.prize-kicker {
+  margin: 12px 0 8px;
+  color: #9d477d;
+  font-size: clamp(14px, 2vh, 18px);
+  letter-spacing: .04em;
+}
+.modal-card h2 {
+  margin: 8px 0 12px;
+  font-family: var(--heading-font);
+  font-size: clamp(27px, 5vh, 39px);
+  line-height: 1.15;
   overflow-wrap: anywhere;
 }
-.prize-panel p { font-weight: 800; line-height: 1.7; }
-.prize-panel .grab-btn { margin-top: 8px; }
-.sparkles { color: #b34782; font-size: 24px; }
-
-footer {
-  padding-top: 28px;
-  color: #9f88b8;
-  text-align: center;
-  font: 7px/1.8 "Press Start 2P", monospace;
+.modal-card p {
+  font-size: clamp(17px, 2.4vh, 21px);
+  line-height: 1.4;
 }
-[hidden] { display: none !important; }
+.modal-card .grab-btn { margin-top: 10px; width: 100%; }
+.help-card { text-align: left; }
+.help-card .sparkles, .help-card h2 { text-align: center; }
+.help-card ol {
+  padding-left: 25px;
+  margin: 16px 0;
+  font-size: clamp(16px, 2.2vh, 20px);
+  line-height: 1.45;
+}
+.help-card li { padding-left: 4px; margin: 8px 0; }
+.help-note {
+  padding: 10px;
+  background: #ffe9f1;
+  border: 2px dashed #d98db5;
+}
 
-@media (max-width: 360px) {
-  .page { width: calc(100% - 16px); padding-top: 22px; }
-  .machine { padding: 8px; }
-  .buttons { grid-template-columns: 42px minmax(0, 1fr) 42px; gap: 6px; }
-  .grab-btn { font-size: 8px; }
-  .brand { font-size: 7px; }
-  .lights { font-size: 8px; letter-spacing: 0; }
-  .event-label { font-size: 7px; }
+@media (max-height: 650px) {
+  .page { gap: 3px; padding-top: 4px; padding-bottom: 4px; }
+  .description { display: none; }
+  canvas { max-height: 31vh; }
+  .machine-actions { margin-top: 4px; }
+  footer { font-size: 10px; }
+}
+@media (max-width: 380px) {
+  .page { padding-left: 8px; padding-right: 8px; }
+  .machine { padding: 4px; }
+  .machine-top { padding: 0 3px; }
+  .brand { font-size: 11px; }
+  .lights { font-size: 9px; letter-spacing: 0; }
+  .buttons { gap: 5px; }
+  .machine-actions { align-items: flex-start; }
+  .hint { max-width: 54%; }
+  .help-btn { padding: 6px; }
+}
+@media (max-height: 520px) {
+  .event-label { display: none; }
+  h1 { font-size: clamp(26px, 7vh, 36px); margin-top: 2px; }
+  .subtitle { font-size: 15px; }
+  .status { margin-bottom: 3px; }
+  .arrow-btn, .grab-btn { min-height: 34px; }
+  .machine-base { min-height: 23px; padding: 2px 6px; }
 }

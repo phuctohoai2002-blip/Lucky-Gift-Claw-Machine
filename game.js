@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
 const statusEl = document.getElementById("status");
+const prizeOverlay = document.getElementById("prizeOverlay");
 const prizePanel = document.getElementById("prizePanel");
 const prizeTitle = document.getElementById("prizeTitle");
 const prizeText = document.getElementById("prizeText");
@@ -20,7 +21,7 @@ const state = {
   clawX: 160, clawY: 66, phase: "idle",
   targetX: 160, targetY: 240, selectedPrize: null,
   grabbedIndex: -1, lastTime: 0, resultTimer: 0, particles: [],
-  prizes: []
+  prizes: [], rewardPool: [], resultPrize: null
 };
 
 function rect(x, y, w, h, color) {
@@ -164,14 +165,17 @@ function drawGem(x, y, size, color) {
 
 function drawPrize(prize, centerX, y, sizeOverride) {
   const size = sizeOverride || prize.size || 26;
-  const x = Math.round(centerX - size / 2);
-  const color = prize.color || "#ff83b4";
+  const color = prize.displayColor || prize.color || "#ff83b4";
   const draw = {
     box: drawBox, envelope: drawEnvelope, ticket: drawTicket, cup: drawCup,
     star: drawStar, flower: drawFlower, handbag: drawHandbag,
     perfume: drawPerfume, cupcake: drawCupcake, gem: drawGem
   }[prize.type] || drawBox;
-  draw(x, y, size, color);
+  ctx.save();
+  ctx.translate(centerX, y + size / 2);
+  ctx.rotate(prize.rotation || 0);
+  draw(-size / 2, -size / 2, size, color);
+  ctx.restore();
 }
 
 function drawClaw() {
@@ -269,10 +273,9 @@ function update(dt) {
     if (state.resultTimer <= 0) {
       state.phase = "result";
       statusEl.textContent = "GẮP QUÀ THÀNH CÔNG!";
-      prizeTitle.textContent = state.selectedPrize.name;
-      prizeText.textContent = state.selectedPrize.detail;
-      prizePanel.hidden = false;
-      prizePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      prizeTitle.textContent = state.resultPrize.name;
+      prizeText.textContent = state.resultPrize.detail;
+      prizeOverlay.hidden = false;
     }
   }
 }
@@ -283,6 +286,16 @@ function loop(now) {
   update(dt);
   drawScene(dt);
   requestAnimationFrame(loop);
+}
+
+function pickWeightedReward(pool) {
+  const totalWeight = pool.reduce((sum, reward) => sum + Math.max(0, Number(reward.weight) || 1), 0);
+  let roll = Math.random() * totalWeight;
+  for (const reward of pool) {
+    roll -= Math.max(0, Number(reward.weight) || 1);
+    if (roll < 0) return reward;
+  }
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 function moveClaw(amount) {
@@ -303,11 +316,12 @@ document.getElementById("grabBtn").addEventListener("click", () => {
   const closestIndex = itemSpots.reduce((best, spot, i) =>
     Math.abs(spot.x - state.clawX) < Math.abs(itemSpots[best].x - state.clawX) ? i : best, 0);
   state.selectedPrize = state.prizes[closestIndex];
+  state.resultPrize = pickWeightedReward(state.rewardPool);
   state.grabbedIndex = -1;
   state.targetX = itemSpots[closestIndex].x;
   state.targetY = Math.max(218, itemSpots[closestIndex].y - 30);
   state.phase = "descending";
-  prizePanel.hidden = true;
+  prizeOverlay.hidden = true;
   statusEl.textContent = "ĐANG GẮP QUÀ...";
 });
 
@@ -316,10 +330,11 @@ document.getElementById("againBtn").addEventListener("click", () => {
   state.clawY = 66;
   state.clawX = 160;
   state.selectedPrize = null;
+  state.resultPrize = null;
   state.grabbedIndex = -1;
   state.particles = [];
   statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
-  prizePanel.hidden = true;
+  prizeOverlay.hidden = true;
 });
 
 window.addEventListener("keydown", event => {
@@ -338,7 +353,19 @@ fetch("rewards.json")
   })
   .then(data => {
     if (!Array.isArray(data) || data.length === 0) throw new Error("Danh sách quà đang trống");
-    state.prizes = data.slice(0, itemSpots.length);
+    state.rewardPool = data;
+    const palette = ["#ff83b4", "#ffe27a", "#b6a1ff", "#8de0c1", "#ffad76", "#f5a6d6"];
+    state.prizes = data.slice(0, itemSpots.length).map((prize, i) => {
+      const spot = itemSpots[i];
+      spot.x = Math.max(24, Math.min(W - 24, spot.x + (Math.random() * 18 - 9)));
+      spot.y += Math.random() * 14 - 7;
+      return {
+        ...prize,
+        size: 20 + Math.floor(Math.random() * 15),
+        displayColor: palette[Math.floor(Math.random() * palette.length)],
+        rotation: (Math.random() - 0.5) * 0.42
+      };
+    });
     statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
   })
   .catch(error => {

@@ -1,31 +1,33 @@
-# 20/10 Pixel Arcade — Lucky Gift Claw Machine
+# Lucky Pixel — 20/10 Pixel-Art Claw Machine
 
-A small mobile-friendly pixel-art claw machine for Vietnamese Women's Day. Built with plain **HTML, CSS, JavaScript and JSON**. No Node.js, npm, React, TypeScript, build tools, API keys or backend.
+A small, mobile-friendly pixel-art claw machine for Vietnamese Women's Day. Built with plain **HTML, CSS, JavaScript and JSON**. No Node.js, npm, React, TypeScript, build tools, API keys or backend.
+
+## Files
+
+- `index.html` — page structure
+- `style.css` — retro pixel-art styling and responsive layout
+- `game.js` — canvas drawing, claw controls, pickup animation and reward reveal
+- `rewards.json` — editable prize types, colors, sizes, probabilities and greetings
 
 ## Run it
 
-1. Open this repository in GitHub Codespaces or download the files.
-2. Use the VS Code **Live Server** extension to open `index.html`.
-3. If using GitHub Pages, publish the repository from **Settings → Pages**. The game is static and can run without a build step.
+Open `index.html` with the VS Code **Live Server** extension, or publish the repository using GitHub Pages. Use a local/static web server because the game loads `rewards.json` with `fetch()`; opening the HTML directly as a `file://` URL may block the JSON request.
 
-> Do not open `index.html` as a direct `file://` URL if the browser blocks loading JSON. Use Live Server or a static web host so `rewards.json` can be fetched.
+## Customize prizes
 
-## Customize the gifts
+Edit `rewards.json`. Each prize has:
+- `name`: title shown after a successful grab
+- `detail`: greeting text
+- `type`: visual style such as `box`, `envelope`, `ticket`, `cup`, `star`, `flower`, `handbag`, `perfume`, `cupcake` or `gem`
+- `color`: pixel-art color in hex format
+- `size`: approximate size in pixels
+- `weight`: relative selection chance
+- `rarity`: `common` or `rare`
 
-Edit `rewards.json`. Each item has:
-- `name`: gift title
-- `emoji`: icon shown in the reward popup
-- `rarity` and `rarityLabel`: category labels
-- `weight`: relative chance of being selected
-- `message`: the greeting shown to the player
-
-The weights currently total 100. They are relative probabilities; update them as you like.
+The current machine displays a mix of prize shapes, not just gift boxes. Keep ten entries to fill all display positions.
 
 ## Controls
 
-- Move the claw with the on-screen left/right buttons or keyboard arrow keys / A and D.
-- Press **GRAB** (or Space) to try to catch a gift.
-- A successful catch opens a gift and its greeting.
-- Use **Sao chép lời chúc** to copy the greeting.
+Use the left/right buttons or keyboard arrow keys to position the claw, then press **GẮP QUÀ** or Space. The claw moves to the nearest item, descends, picks it up, lifts it, and reveals the greeting. **CHƠI LẠI** resets the game.
 
-Everything runs in the visitor's browser. Play counts are per page session; there is no shared counter or database.
+All gameplay runs in the visitor's browser. There is no shared score counter or database.

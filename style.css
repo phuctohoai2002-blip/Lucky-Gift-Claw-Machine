@@ -11,9 +11,15 @@
 
 * { box-sizing: border-box; }
 
-body {
+html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  min-height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  min-height: 100svh;
   color: var(--cream);
   font-family: "Nunito", sans-serif;
   background-color: var(--background);
@@ -26,43 +32,48 @@ body {
 
 .page {
   width: min(100% - 24px, 480px);
+  height: 100svh;
   margin: auto;
-  padding: 30px 0 24px;
+  padding: clamp(6px, 1.5svh, 14px) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(6px, 1.3svh, 12px);
+  overflow: hidden;
 }
 
-.hero { text-align: center; margin-bottom: 24px; }
-
+.hero { flex: 0 0 auto; text-align: center; margin: 0; }
 .event-label {
   display: inline-block;
-  padding: 9px;
+  padding: clamp(5px, 1svh, 9px);
   color: var(--yellow);
   border: 2px solid var(--yellow);
   box-shadow: 4px 4px 0 #100a19;
-  font: 8px "Press Start 2P", monospace;
+  font: clamp(6px, 1.25svh, 8px) "Press Start 2P", monospace;
 }
-
 h1 {
-  margin: 22px 0 14px;
-  font: clamp(22px, 7vw, 34px)/1.6 "Press Start 2P", monospace;
-  text-shadow: 4px 4px 0 #a34483;
+  margin: clamp(7px, 1.6svh, 15px) 0 clamp(4px, 1svh, 9px);
+  font: clamp(17px, 4.2vw, 30px)/1.35 "Press Start 2P", monospace;
+  text-shadow: 3px 3px 0 #a34483;
 }
 h1 span { color: var(--yellow); }
-
 .subtitle {
+  margin: 0;
   color: var(--pink);
-  font: 9px/1.8 "Press Start 2P", monospace;
+  font: clamp(6px, 1.3svh, 9px)/1.6 "Press Start 2P", monospace;
 }
-.description { color: #e7d8f6; font-size: 14px; }
+.description { margin: 5px 0 0; color: #e7d8f6; font-size: clamp(11px, 1.8svh, 14px); }
 
 .machine {
-  padding: 12px;
+  flex: 0 1 auto;
+  min-height: 0;
+  padding: clamp(6px, 1.5vw, 12px);
   border: 4px solid #a78aca;
   background: linear-gradient(135deg, #7c5aa1, #51336f);
-  box-shadow: 0 0 0 4px #261936, 0 10px 0 #130d1d, 0 18px 35px #100a19a8;
+  box-shadow: 0 0 0 4px #261936, 0 7px 0 #130d1d, 0 12px 24px #100a19a8;
 }
-
 .machine-top {
-  height: 36px;
+  height: clamp(26px, 4.5svh, 36px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,146 +83,108 @@ h1 span { color: var(--yellow); }
   border: 3px solid var(--dark);
   border-bottom: 0;
 }
-
-.brand {
-  color: var(--yellow);
-  font: 8px "Press Start 2P", monospace;
-  white-space: nowrap;
-}
+.brand { color: var(--yellow); font: clamp(6px, 1.25svh, 8px) "Press Start 2P", monospace; white-space: nowrap; }
 .lights { color: var(--pink); font-size: 10px; letter-spacing: 2px; }
-
 .window {
+  display: flex;
+  justify-content: center;
   border: 4px solid var(--dark);
   background: #191428;
   overflow: hidden;
 }
 canvas {
   display: block;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: min(42svh, 360px);
+  max-width: 100%;
   image-rendering: pixelated;
 }
-
 .control-panel {
-  padding: 12px 8px;
+  padding: clamp(6px, 1.5svh, 12px) 8px;
   background: #2d1e42;
   border: 4px solid var(--dark);
   border-top: 0;
 }
-
 .status {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 26px;
-  margin-bottom: 12px;
+  min-height: clamp(18px, 3svh, 26px);
+  margin-bottom: clamp(5px, 1svh, 12px);
   color: #a8f0ce;
-  font: 8px "Press Start 2P", monospace;
-  line-height: 1.8;
+  font: clamp(6px, 1.25svh, 8px) "Press Start 2P", monospace;
+  line-height: 1.7;
   text-align: center;
 }
-.status-light {
-  flex-shrink: 0;
-  width: 7px;
-  height: 7px;
-  background: #8ce9c4;
-  box-shadow: 0 0 8px #8ce9c4;
-}
-
-.buttons {
-  display: grid;
-  grid-template-columns: 50px minmax(0, 1fr) 50px;
-  gap: 8px;
-}
-
-button {
-  border: 0;
-  cursor: pointer;
-  touch-action: manipulation;
-  font-family: "Press Start 2P", monospace;
-}
-button:active { transform: translateY(3px); }
+.status-light { flex-shrink: 0; width: 7px; height: 7px; background: #8ce9c4; box-shadow: 0 0 8px #8ce9c4; }
+.buttons { display: grid; grid-template-columns: 50px minmax(0, 1fr) 50px; gap: 8px; }
+button { border: 0; cursor: pointer; touch-action: manipulation; font-family: "Press Start 2P", monospace; }
+button:active { transform: translateY(2px); }
 button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
 button:disabled { opacity: .55; cursor: not-allowed; }
-
 .arrow-btn {
-  min-height: 50px;
-  color: white;
-  background: #8d68b4;
-  border: 3px solid #c4a3e2;
-  box-shadow: 0 4px 0 #171020;
-  font-size: 18px;
+  min-height: clamp(38px, 6svh, 50px);
+  color: white; background: #8d68b4; border: 3px solid #c4a3e2;
+  box-shadow: 0 4px 0 #171020; font-size: 18px;
 }
-
 .grab-btn {
-  min-height: 50px;
-  padding: 10px 6px;
-  color: #3a214a;
-  background: var(--yellow);
-  border: 3px solid #fff0b8;
-  box-shadow: 0 4px 0 #171020;
-  font-size: 9px;
-  line-height: 1.8;
+  min-height: clamp(38px, 6svh, 50px);
+  padding: 8px 6px; color: #3a214a; background: var(--yellow);
+  border: 3px solid #fff0b8; box-shadow: 0 4px 0 #171020;
+  font-size: clamp(7px, 1.4svh, 9px); line-height: 1.7;
 }
-
-.hint {
-  margin: 13px 0 0;
-  color: #cdbbdd;
-  font-size: 12px;
-  text-align: center;
-}
-
+.hint { margin: clamp(5px, 1svh, 13px) 0 0; color: #cdbbdd; font-size: clamp(10px, 1.6svh, 12px); text-align: center; }
 .machine-base {
-  min-height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px;
-  background: #4a2e67;
-  border: 4px solid var(--dark);
-  border-top: 0;
+  min-height: clamp(30px, 5svh, 45px);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 8px; background: #4a2e67; border: 4px solid var(--dark); border-top: 0;
 }
 .speaker { color: #21172f; font-size: 13px; letter-spacing: 1px; }
 .coin-slot { width: 32px; height: 10px; background: #1a1125; border: 2px solid #9b79bd; }
 .base-label { color: var(--yellow); font: 7px "Press Start 2P", monospace; white-space: nowrap; }
+footer { flex: 0 0 auto; padding: 0; color: #9f88b8; text-align: center; font: clamp(5px, 1svh, 7px)/1.5 "Press Start 2P", monospace; }
 
+/* Prize result appears above the game instead of adding page height. */
+.prize-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #100a19d9;
+  backdrop-filter: blur(3px);
+}
 .prize-panel {
-  margin-top: 24px;
-  padding: 22px 16px;
+  width: min(100%, 410px);
+  max-height: calc(100svh - 32px);
+  overflow: auto;
+  padding: clamp(18px, 4svh, 28px) 18px;
   text-align: center;
   color: #241735;
   background: #ffd5e6;
   border: 4px solid white;
   box-shadow: 6px 6px 0 #100a19;
 }
-.prize-kicker {
-  color: #9d477d;
-  font: 8px/1.8 "Press Start 2P", monospace;
-}
-.prize-panel h2 {
-  font: 11px/1.9 "Press Start 2P", monospace;
-  overflow-wrap: anywhere;
-}
+.prize-kicker { color: #9d477d; font: clamp(7px, 1.4svh, 8px)/1.8 "Press Start 2P", monospace; }
+.prize-panel h2 { font: clamp(10px, 2.2svh, 14px)/1.9 "Press Start 2P", monospace; overflow-wrap: anywhere; }
 .prize-panel p { font-weight: 800; line-height: 1.7; }
 .prize-panel .grab-btn { margin-top: 8px; }
 .sparkles { color: #b34782; font-size: 24px; }
-
-footer {
-  padding-top: 28px;
-  color: #9f88b8;
-  text-align: center;
-  font: 7px/1.8 "Press Start 2P", monospace;
-}
 [hidden] { display: none !important; }
 
+@media (max-height: 650px) {
+  .description { display: none; }
+  canvas { height: min(37svh, 280px); }
+  .page { gap: 6px; }
+}
 @media (max-width: 360px) {
-  .page { width: calc(100% - 16px); padding-top: 22px; }
-  .machine { padding: 8px; }
+  .page { width: calc(100% - 16px); }
+  .machine { padding: 6px; }
   .buttons { grid-template-columns: 42px minmax(0, 1fr) 42px; gap: 6px; }
-  .grab-btn { font-size: 8px; }
-  .brand { font-size: 7px; }
+  .grab-btn { font-size: 7px; }
+  .brand { font-size: 6px; }
   .lights { font-size: 8px; letter-spacing: 0; }
-  .event-label { font-size: 7px; }
+  .event-label { font-size: 6px; }
 }

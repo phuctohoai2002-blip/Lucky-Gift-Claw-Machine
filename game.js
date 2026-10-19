@@ -379,17 +379,6 @@ document.getElementById("grabBtn").addEventListener("click", () => {
   statusEl.textContent = "ĐANG GẮP QUÀ...";
 });
 
-document.getElementById("againBtn").addEventListener("click", () => {
-  state.phase = "idle";
-  state.clawY = 66;
-  state.clawX = 160;
-  state.selectedPrize = null;
-  state.grabbedIndex = -1;
-  state.particles = [];
-  statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
-  resultModal.hidden = true;
-});
-
 window.addEventListener("keydown", event => {
   if (event.key === "ArrowLeft") { event.preventDefault(); moveClaw(-16); }
   if (event.key === "ArrowRight") { event.preventDefault(); moveClaw(16); }

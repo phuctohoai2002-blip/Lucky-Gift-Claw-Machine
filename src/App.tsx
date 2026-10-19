@@ -103,7 +103,7 @@ function App() {
     return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('blur', onBlur); stopHold() }
   })
 
-  const grab = async () => {
+  async function grab() {
     if (busy.current || screen !== 'game' || phase === 'reveal') return
     busy.current = true
     stopHold()

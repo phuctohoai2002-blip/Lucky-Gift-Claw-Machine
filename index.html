@@ -39,7 +39,7 @@
           <button id="rightBtn" class="arrow-btn" aria-label="Di chuyển càng gắp sang phải">▶</button>
         </div>
 
-        <p class="hint">Di chuyển càng gắp rồi nhấn GẮP QUÀ</p>
+        <div class="machine-actions"><p class="hint">Di chuyển càng gắp rồi nhấn GẮP QUÀ</p><button id="helpBtn" class="help-btn" type="button">? CÁCH GẮP QUÀ</button></div>
       </div>
 
       <div class="machine-base">
@@ -49,15 +49,35 @@
       </div>
     </section>
 
-    <section id="prizePanel" class="prize-panel" hidden aria-live="polite">
+    <footer>MADE WITH PIXEL LOVE · 20/10</footer>
+  </main>
+
+  <div id="resultModal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="prizeTitle">
+    <section class="modal-card result-card" aria-live="polite">
+      <button class="modal-close" id="closeResultBtn" type="button" aria-label="Đóng">×</button>
       <div class="sparkles" aria-hidden="true">✦ ✧ ★ ✧ ✦</div>
       <p class="prize-kicker">BẠN GẮP ĐƯỢC MÓN QUÀ</p>
       <h2 id="prizeTitle">BẠN ĐÃ NHẬN ĐƯỢC QUÀ!</h2>
       <p id="prizeText"></p>
-      <button id="againBtn" class="grab-btn">CHƠI LẠI</button>
+      <button id="againBtn" class="grab-btn">CHƠI TIẾP</button>
     </section>
+  </div>
 
-    <footer>MADE WITH PIXEL LOVE · 20/10</footer>
+  <div id="helpModal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <section class="modal-card help-card">
+      <button class="modal-close" id="closeHelpBtn" type="button" aria-label="Đóng">×</button>
+      <div class="sparkles" aria-hidden="true">✦ HOW TO PLAY ✦</div>
+      <h2 id="helpTitle">CÁCH GẮP QUÀ</h2>
+      <ol>
+        <li>Dùng nút <strong>◀</strong> và <strong>▶</strong> để di chuyển càng gắp.</li>
+        <li>Canh vị trí món quà bạn muốn rồi nhấn <strong>GẮP QUÀ</strong>.</li>
+        <li>Chờ càng gắp kéo quà lên và mở lời chúc bất ngờ.</li>
+        <li>Nhấn <strong>CHƠI TIẾP</strong> để thử vận may lần nữa.</li>
+      </ol>
+      <p class="help-note">Mỗi lượt là một kết quả ngẫu nhiên — cùng món quà vẫn có thể mang đến lời chúc khác nhau!</p>
+      <button id="gotItBtn" class="grab-btn" type="button">ĐÃ HIỂU!</button>
+    </section>
+  </div>
   </main>
 
   <script src="game.js"></script>

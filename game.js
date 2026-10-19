@@ -261,8 +261,8 @@ function update(dt) {
     if (Math.abs(state.targetX - state.clawX) < 2 && state.clawY >= state.targetY) {
       state.clawX = state.targetX;
       state.clawY = state.targetY;
-      // Simulate whether the claw actually holds the prize.
-      state.grabSuccess = Math.random() < 0.75;
+      // The claw succeeds only if a prize was within reach when it descended.
+      state.grabSuccess = Boolean(state.selectedPrize);
       state.phase = "rising";
       state.grabbedIndex = state.grabSuccess
         ? state.prizes.indexOf(state.selectedPrize)
@@ -380,12 +380,21 @@ document.getElementById("grabBtn").addEventListener("click", () => {
 
   const closestIndex = itemSpots.reduce((best, spot, i) =>
     Math.abs(spot.x - state.clawX) < Math.abs(itemSpots[best].x - state.clawX) ? i : best, 0);
-  state.selectedPrize = state.prizes[closestIndex];
+  const closestSpot = itemSpots[closestIndex];
+  const horizontalDistance = Math.abs(closestSpot.x - state.clawX);
+
+  // Keep the claw at the player's chosen position. If no prize is close enough,
+  // the claw comes down empty and the result popup will report a miss.
+  state.selectedPrize = horizontalDistance <= 13
+    ? state.prizes[closestIndex]
+    : null;
   state.grabSuccess = false;
   state.resultPrize = null;
   state.grabbedIndex = -1;
-  state.targetX = itemSpots[closestIndex].x;
-  state.targetY = Math.max(218, itemSpots[closestIndex].y - 30);
+  state.targetX = state.clawX;
+  state.targetY = state.selectedPrize
+    ? Math.max(218, closestSpot.y - 30)
+    : 305;
   state.phase = "descending";
   resultModal.hidden = true;
   statusEl.textContent = "ĐANG GẮP QUÀ...";

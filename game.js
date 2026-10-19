@@ -3,18 +3,26 @@ const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
 const statusEl = document.getElementById("status");
-const prizePanel = document.getElementById("prizePanel");
+const resultModal = document.getElementById("resultModal");
+const helpModal = document.getElementById("helpModal");
 const prizeTitle = document.getElementById("prizeTitle");
 const prizeText = document.getElementById("prizeText");
 const W = canvas.width;
 const H = canvas.height;
 
-const itemSpots = [
-  { x: 35, y: 274 }, { x: 97, y: 277 }, { x: 160, y: 272 },
-  { x: 223, y: 276 }, { x: 285, y: 274 },
-  { x: 61, y: 312 }, { x: 111, y: 313 }, { x: 209, y: 312 },
-  { x: 259, y: 313 }, { x: 160, y: 312 }
-];
+const itemSpots = createItemSpots();
+
+function createItemSpots() {
+  const spots = [];
+  const rows = [{ y: 276, xs: [35, 97, 160, 223, 285] }, { y: 313, xs: [61, 111, 160, 209, 259] }];
+  rows.forEach(row => row.xs.forEach(x => spots.push({
+    x: Math.max(28, Math.min(292, x + (Math.random() - 0.5) * 22)),
+    y: row.y + (Math.random() - 0.5) * 8
+  })));
+  return spots.sort(() => Math.random() - 0.5);
+}
+
+const prizePalette = ["#ff83b4", "#ffe27a", "#b6a1ff", "#8de0c1", "#ffad76", "#f4a6c8", "#9ed9ff"];
 
 const state = {
   clawX: 160, clawY: 66, phase: "idle",
@@ -163,15 +171,23 @@ function drawGem(x, y, size, color) {
 }
 
 function drawPrize(prize, centerX, y, sizeOverride) {
-  const size = sizeOverride || prize.size || 26;
+  const size = sizeOverride || prize.visualSize || prize.size || 26;
   const x = Math.round(centerX - size / 2);
-  const color = prize.color || "#ff83b4";
+  const color = prize.visualColor || prize.color || "#ff83b4";
   const draw = {
     box: drawBox, envelope: drawEnvelope, ticket: drawTicket, cup: drawCup,
     star: drawStar, flower: drawFlower, handbag: drawHandbag,
     perfume: drawPerfume, cupcake: drawCupcake, gem: drawGem
   }[prize.type] || drawBox;
-  draw(x, y, size, color);
+  if (prize.rotation && !sizeOverride) {
+    ctx.save();
+    ctx.translate(centerX, y + size / 2);
+    ctx.rotate(prize.rotation);
+    draw(-size / 2, -size / 2, size, color);
+    ctx.restore();
+  } else {
+    draw(x, y, size, color);
+  }
 }
 
 function drawClaw() {
@@ -269,10 +285,10 @@ function update(dt) {
     if (state.resultTimer <= 0) {
       state.phase = "result";
       statusEl.textContent = "GẮP QUÀ THÀNH CÔNG!";
-      prizeTitle.textContent = state.selectedPrize.name;
-      prizeText.textContent = state.selectedPrize.detail;
-      prizePanel.hidden = false;
-      prizePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      prizeTitle.textContent = state.resultPrize.name;
+      prizeText.textContent = state.resultPrize.detail;
+      resultModal.hidden = false;
+      document.getElementById("closeResultBtn").focus();
     }
   }
 }
@@ -282,7 +298,45 @@ function loop(now) {
   state.lastTime = now;
   update(dt);
   drawScene(dt);
-  requestAnimationFrame(loop);
+  function chooseRandomReward(prizes) {
+  const totalWeight = prizes.reduce((sum, prize) => sum + Math.max(0, Number(prize.weight) || 1), 0);
+  let roll = Math.random() * totalWeight;
+  for (const prize of prizes) {
+    roll -= Math.max(0, Number(prize.weight) || 1);
+    if (roll <= 0) return prize;
+  }
+  return prizes[Math.floor(Math.random() * prizes.length)];
+}
+
+function closeHelpModal() { helpModal.hidden = true; }
+
+document.getElementById("helpBtn").addEventListener("click", () => { helpModal.hidden = false; document.getElementById("gotItBtn").focus(); });
+document.getElementById("gotItBtn").addEventListener("click", closeHelpModal);
+document.getElementById("closeHelpBtn").addEventListener("click", closeHelpModal);
+document.getElementById("closeResultBtn").addEventListener("click", () => {
+  resultModal.hidden = true;
+  state.phase = "idle";
+  state.clawY = 66;
+  state.clawX = 160;
+  state.selectedPrize = null;
+  state.grabbedIndex = -1;
+  statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
+});
+[ resultModal, helpModal ].forEach(modal => modal.addEventListener("click", event => {
+  if (event.target === modal) {
+    modal.hidden = true;
+    if (modal === resultModal) {
+      state.phase = "idle"; state.clawY = 66; state.clawX = 160;
+      state.selectedPrize = null; state.grabbedIndex = -1;
+      statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
+    }
+  }
+}));
+window.addEventListener("keydown", event => {
+  if (event.key === "Escape") { resultModal.hidden = true; helpModal.hidden = true; }
+});
+
+requestAnimationFrame(loop);
 }
 
 function moveClaw(amount) {
@@ -303,11 +357,12 @@ document.getElementById("grabBtn").addEventListener("click", () => {
   const closestIndex = itemSpots.reduce((best, spot, i) =>
     Math.abs(spot.x - state.clawX) < Math.abs(itemSpots[best].x - state.clawX) ? i : best, 0);
   state.selectedPrize = state.prizes[closestIndex];
+  state.resultPrize = chooseRandomReward(state.prizes);
   state.grabbedIndex = -1;
   state.targetX = itemSpots[closestIndex].x;
   state.targetY = Math.max(218, itemSpots[closestIndex].y - 30);
   state.phase = "descending";
-  prizePanel.hidden = true;
+  resultModal.hidden = true;
   statusEl.textContent = "ĐANG GẮP QUÀ...";
 });
 
@@ -319,7 +374,7 @@ document.getElementById("againBtn").addEventListener("click", () => {
   state.grabbedIndex = -1;
   state.particles = [];
   statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
-  prizePanel.hidden = true;
+  resultModal.hidden = true;
 });
 
 window.addEventListener("keydown", event => {
@@ -338,7 +393,12 @@ fetch("rewards.json")
   })
   .then(data => {
     if (!Array.isArray(data) || data.length === 0) throw new Error("Danh sách quà đang trống");
-    state.prizes = data.slice(0, itemSpots.length);
+    state.prizes = data.slice(0, itemSpots.length).map(prize => ({
+      ...prize,
+      visualSize: 22 + Math.floor(Math.random() * 13),
+      visualColor: prizePalette[Math.floor(Math.random() * prizePalette.length)],
+      rotation: (Math.random() - 0.5) * 0.5
+    }));
     statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
   })
   .catch(error => {

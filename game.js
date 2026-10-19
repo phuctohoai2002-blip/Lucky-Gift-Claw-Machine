@@ -293,51 +293,64 @@ function update(dt) {
   }
 }
 
+function chooseRandomReward(prizes) {
+  const weighted = prizes.map(prize => ({
+    prize,
+    weight: Math.max(0, Number(prize.weight) || 1)
+  }));
+  const totalWeight = weighted.reduce((sum, item) => sum + item.weight, 0);
+  if (totalWeight <= 0) return prizes[Math.floor(Math.random() * prizes.length)];
+  let roll = Math.random() * totalWeight;
+  for (const item of weighted) {
+    roll -= item.weight;
+    if (roll <= 0) return item.prize;
+  }
+  return weighted[weighted.length - 1].prize;
+}
+
 function loop(now) {
   const dt = Math.min((now - state.lastTime) / 1000 || 0, .04);
   state.lastTime = now;
   update(dt);
   drawScene(dt);
-  function chooseRandomReward(prizes) {
-  const totalWeight = prizes.reduce((sum, prize) => sum + Math.max(0, Number(prize.weight) || 1), 0);
-  let roll = Math.random() * totalWeight;
-  for (const prize of prizes) {
-    roll -= Math.max(0, Number(prize.weight) || 1);
-    if (roll <= 0) return prize;
-  }
-  return prizes[Math.floor(Math.random() * prizes.length)];
+  requestAnimationFrame(loop);
 }
 
-function closeHelpModal() { helpModal.hidden = true; }
-
-document.getElementById("helpBtn").addEventListener("click", () => { helpModal.hidden = false; document.getElementById("gotItBtn").focus(); });
-document.getElementById("gotItBtn").addEventListener("click", closeHelpModal);
-document.getElementById("closeHelpBtn").addEventListener("click", closeHelpModal);
-document.getElementById("closeResultBtn").addEventListener("click", () => {
+function resetAfterResult() {
   resultModal.hidden = true;
   state.phase = "idle";
   state.clawY = 66;
   state.clawX = 160;
   state.selectedPrize = null;
   state.grabbedIndex = -1;
+  state.particles = [];
   statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
-});
-[ resultModal, helpModal ].forEach(modal => modal.addEventListener("click", event => {
-  if (event.target === modal) {
-    modal.hidden = true;
-    if (modal === resultModal) {
-      state.phase = "idle"; state.clawY = 66; state.clawX = 160;
-      state.selectedPrize = null; state.grabbedIndex = -1;
-      statusEl.textContent = "SẴN SÀNG GẮP QUÀ!";
-    }
-  }
-}));
-window.addEventListener("keydown", event => {
-  if (event.key === "Escape") { resultModal.hidden = true; helpModal.hidden = true; }
-});
-
-requestAnimationFrame(loop);
 }
+
+function closeHelpModal() {
+  helpModal.hidden = true;
+}
+
+document.getElementById("helpBtn").addEventListener("click", () => {
+  helpModal.hidden = false;
+  document.getElementById("gotItBtn").focus();
+});
+document.getElementById("gotItBtn").addEventListener("click", closeHelpModal);
+document.getElementById("closeHelpBtn").addEventListener("click", closeHelpModal);
+document.getElementById("closeResultBtn").addEventListener("click", resetAfterResult);
+document.getElementById("againBtn").addEventListener("click", resetAfterResult);
+
+[resultModal, helpModal].forEach(modal => modal.addEventListener("click", event => {
+  if (event.target !== modal) return;
+  if (modal === resultModal) resetAfterResult();
+  else modal.hidden = true;
+}));
+
+window.addEventListener("keydown", event => {
+  if (event.key !== "Escape") return;
+  if (!resultModal.hidden) resetAfterResult();
+  helpModal.hidden = true;
+});
 
 function moveClaw(amount) {
   if (state.phase !== "idle") return;

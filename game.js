@@ -46,16 +46,10 @@ function drawBackground() {
   rect(0, 0, W, H, "#191428");
   rect(8, 8, W - 16, H - 16, "#342348");
   rect(14, 14, W - 28, H - 28, "#21192f");
-  const stars = [[32,35],[72,52],[286,32],[267,74],[44,106],[290,126],[28,159],[282,188],[61,207],[253,220],[116,40],[205,50]];
-  stars.forEach((s, i) => rect(s[0], s[1], i % 3 === 0 ? 4 : 2, i % 3 === 0 ? 4 : 2, i % 2 ? "#a98ad1" : "#ffe58a"));
-
   rect(17, 258, 286, 84, "#49335e");
   rect(17, 258, 286, 4, "#8f6cb2");
   for (let x = 22; x < 300; x += 16) rect(x, 264, 2, 72, "#382648");
   for (let y = 272; y < 340; y += 16) rect(18, y, 284, 2, "#382648");
-  drawHeart(38, 72, "#ff8fba");
-  drawHeart(277, 98, "#ff8fba");
-  drawHeart(294, 232, "#ffe58a");
 }
 
 function drawMachineSign() {

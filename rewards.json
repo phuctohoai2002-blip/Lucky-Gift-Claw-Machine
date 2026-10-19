@@ -1,0 +1,12 @@
+[
+  {"id":"sweet-note","name":"Lời chúc ngọt ngào","emoji":"💌","rarity":"common","rarityLabel":"LITTLE TREAT","weight":22,"message":"Mong bạn luôn được yêu thương, được lắng nghe và có thật nhiều ngày vui. Chúc bạn 20/10 rạng rỡ theo cách riêng của mình!"},
+  {"id":"coffee-time","name":"Một chiếc hẹn cà phê","emoji":"☕","rarity":"common","rarityLabel":"LITTLE TREAT","weight":18,"message":"Chúc bạn có một ngày thật chill, một ly nước ngon và một chiếc deadline biết điều. Hôm nay cứ ưu tiên niềm vui nhé!"},
+  {"id":"cat-energy","name":"Năng lượng mèo con","emoji":"🐱","rarity":"common","rarityLabel":"LITTLE TREAT","weight":15,"message":"Chúc bạn đáng yêu vừa đủ, quyền lực đúng lúc và luôn có người sẵn sàng chiều chuộng như một bé mèo!"},
+  {"id":"flower-power","name":"Bó hoa pixel","emoji":"🌷","rarity":"common","rarityLabel":"LITTLE TREAT","weight":12,"message":"Mong bạn luôn nở rộ theo nhịp của riêng mình. Không cần giống bất kỳ ai — bạn đã có nét đẹp rất riêng rồi."},
+  {"id":"snack-box","name":"Hộp snack chữa lành","emoji":"🍪","rarity":"common","rarityLabel":"LITTLE TREAT","weight":10,"message":"Chúc bạn luôn có món ngon để ăn, chuyện vui để kể và đủ thời gian nghỉ ngơi sau những ngày bận rộn."},
+  {"id":"main-character","name":"Hào quang nữ chính","emoji":"👑","rarity":"rare","rarityLabel":"LUCKY STAR","weight":8,"message":"Bạn là nữ chính của cuộc đời mình. Chúc mọi lựa chọn đều đưa bạn đến nơi xứng đáng, còn những người không phù hợp tự động thành vai phụ."},
+  {"id":"lucky-star","name":"Ngôi sao may mắn","emoji":"🌟","rarity":"rare","rarityLabel":"LUCKY STAR","weight":6,"message":"Chúc vận may tìm đúng địa chỉ, cơ hội đến đúng lúc và mọi điều tốt đẹp cứ thế nối đuôi nhau xuất hiện."},
+  {"id":"self-care","name":"Một ngày nuông chiều bản thân","emoji":"🧸","rarity":"rare","rarityLabel":"LUCKY STAR","weight":4,"message":"Tặng bạn lời nhắc: nghỉ ngơi không phải lười biếng. Mong bạn luôn dành cho bản thân sự dịu dàng mà bạn dành cho mọi người."},
+  {"id":"queen-mode","name":"Queen Energy","emoji":"💎","rarity":"legendary","rarityLabel":"QUEEN ENERGY","weight":3,"message":"Chúc bạn có khí chất của người biết giá trị bản thân: tự tin, độc lập, sáng rực và không cần xin phép ai để tỏa sáng."},
+  {"id":"wish-granted","name":"Điều ước thành hiện thực","emoji":"🪄","rarity":"legendary","rarityLabel":"QUEEN ENERGY","weight":2,"message":"Hãy giữ lại một điều ước cho riêng mình. Chúc bạn đủ kiên trì để theo đuổi nó và đủ bất ngờ để nhận ra điều tốt đẹp đang đến."}
+]

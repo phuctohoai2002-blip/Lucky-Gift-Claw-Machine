@@ -1,67 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#17152e">
-  <meta name="description" content="Máy gắp quà pixel art 20/10 dành tặng những đồng nghiệp nữ tuyệt vời.">
-  <title>20/10 Pixel Arcade — Máy gắp quà</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#21172f">
+  <title>Lucky Pixel — 20/10</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="page-shell">
-    <header class="topbar">
-      <div class="brand-mark" aria-hidden="true">✿</div>
-      <div><p class="eyebrow">SPECIAL EVENT · 20/10</p><h1>PIXEL GIFT ARCADE</h1></div>
-      <div class="live-pill"><span></span> OPEN</div>
+  <main class="page">
+    <header class="hero">
+      <div class="event-label">★ LIMITED EVENT · 20/10 ★</div>
+      <h1>HAPPY <span>20/10</span></h1>
+      <p class="subtitle">MÁY GẮP QUÀ MAY MẮN</p>
+      <p class="description">Một món quà nhỏ dành riêng cho bạn!</p>
     </header>
-    <main class="layout">
-      <section class="intro">
-        <p class="eyebrow">A LITTLE SOMETHING FOR YOU</p>
-        <h2>Gắp một món quà,<br><span>nhận một lời thương.</span></h2>
-        <p class="intro-copy">Dành tặng những cô gái luôn làm ngày thường trở nên đặc biệt. Chúc bạn 20/10 thật vui!</p>
-        <div class="stats-row">
-          <div class="stat"><strong id="plays">00</strong><span>LƯỢT CHƠI</span></div>
-          <div class="stat"><strong>10</strong><span>MÓN QUÀ</span></div>
-          <div class="stat"><strong>♥</strong><span>FROM THE TEAM</span></div>
+
+    <section class="machine" aria-label="Máy gắp quà pixel art">
+      <div class="machine-top">
+        <span class="lights" aria-hidden="true">● ● ●</span>
+        <span class="brand">LUCKY PIXEL</span>
+        <span class="lights" aria-hidden="true">● ● ●</span>
+      </div>
+
+      <div class="window">
+        <canvas id="game" width="320" height="360" aria-label="Máy gắp các món quà pixel"></canvas>
+      </div>
+
+      <div class="control-panel">
+        <div class="status" aria-live="polite">
+          <span class="status-light"></span>
+          <span id="status">ĐANG TẢI QUÀ...</span>
         </div>
-      </section>
-      <section class="game-card" aria-label="Máy gắp quà">
-        <div class="machine-heading"><span>★ LUCKY CLAW ★</span><span class="machine-lights" aria-hidden="true">● ● ●</span></div>
-        <div class="machine">
-          <div class="machine-top">
-            <div class="prize-sign">CUTE THINGS<br><span>INSIDE!</span></div>
-            <div class="score-display"><small>YOUR LUCK</small><strong id="luck-display">READY!</strong></div>
-          </div>
-          <div class="glass">
-            <div class="glass-shine"></div><div class="rail"></div>
-            <div class="claw-track" id="claw-track"><div class="claw-cable" id="claw-cable"></div><div class="claw" id="claw" aria-hidden="true"><div class="claw-head"></div><div class="claw-arm left"></div><div class="claw-arm right"></div></div></div>
-            <div class="prize-pool" id="prize-pool" aria-label="Các hộp quà">
-              <span class="gift gift-pink" style="--tilt:-8deg">♥</span><span class="gift gift-yellow" style="--tilt:5deg">★</span><span class="gift gift-blue" style="--tilt:-3deg">✿</span><span class="gift gift-purple" style="--tilt:7deg">?</span><span class="gift gift-green" style="--tilt:-5deg">♥</span><span class="gift gift-orange" style="--tilt:3deg">★</span><span class="gift gift-blue" style="--tilt:8deg">✿</span><span class="gift gift-pink" style="--tilt:-6deg">!</span><span class="gift gift-yellow" style="--tilt:4deg">♥</span><span class="gift gift-purple" style="--tilt:-4deg">★</span>
-            </div><div class="glass-floor"></div>
-          </div>
-          <div class="machine-base"><div class="coin-slot"><span>INSERT LOVE</span><div></div></div><div class="control-panel"><div class="joystick"><div class="stick"></div><div class="ball"></div></div><button class="grab-button" id="grab-button" type="button"><span>✦</span> GRAB! <span>✦</span></button></div></div>
-          <div class="machine-feet"><i></i><i></i></div>
+
+        <div class="buttons">
+          <button id="leftBtn" class="arrow-btn" aria-label="Di chuyển càng gắp sang trái">◀</button>
+          <button id="grabBtn" class="grab-btn">✦ GẮP QUÀ ✦</button>
+          <button id="rightBtn" class="arrow-btn" aria-label="Di chuyển càng gắp sang phải">▶</button>
         </div>
-        <div class="controls"><button type="button" class="move-button" id="left-button" aria-label="Di chuyển sang trái">◀</button><p>MOVE THE CLAW<br><small>← → / A D</small></p><button type="button" class="move-button" id="right-button" aria-label="Di chuyển sang phải">▶</button></div>
-        <p class="hint" id="hint" role="status" aria-live="polite">Di chuyển càng gắp rồi nhấn GRAB để nhận quà nhé!</p>
-      </section>
-      <aside class="side-panel">
-        <div class="panel-card gift-guide">
-          <div class="panel-title"><span>✦</span> GIFT COLLECTION</div><p class="muted">Trong máy có những bất ngờ nho nhỏ đang chờ bạn.</p>
-          <div class="rarity-row"><span class="rarity-dot common"></span><span>Little Treat</span><small>QUÀ XINH</small></div>
-          <div class="rarity-row"><span class="rarity-dot rare"></span><span>Lucky Star</span><small>QUÀ HIẾM</small></div>
-          <div class="rarity-row"><span class="rarity-dot legendary"></span><span>Queen Energy</span><small>SIÊU HIẾM</small></div>
-          <div class="pixel-divider"></div><p class="tiny-note">Mỗi lượt chơi là một bất ngờ. Chúc bạn gặp may!</p>
-        </div>
-        <div class="panel-card message-card"><div class="panel-title"><span>♡</span> A NOTE FOR YOU</div><div class="note-icon">✿</div><p>“Bạn xứng đáng với những điều dễ thương — hôm nay và cả những ngày bình thường.”</p><span class="note-sign">— FROM YOUR TEAM, WITH LOVE</span></div>
-      </aside>
-    </main>
-    <footer><span>PIXEL ARCADE © 20/10</span><span>MADE WITH ♡ & PIXELS</span></footer>
-  </div>
-  <dialog class="reward-dialog" id="reward-dialog" aria-labelledby="reward-title">
-    <div class="dialog-sparkles" aria-hidden="true">✦　✧　✦</div><p class="eyebrow" id="reward-rarity">YOU GOT A GIFT!</p><div class="reward-emoji" id="reward-emoji">🎁</div><h2 id="reward-title">Một món quà dành cho bạn!</h2><p id="reward-message"></p><div class="reward-name" id="reward-name"></div><button type="button" class="grab-button dialog-button" id="close-reward">YAY! THANK YOU ♡</button><button type="button" class="text-button" id="share-reward">Sao chép lời chúc</button>
-  </dialog>
+
+        <p class="hint">Di chuyển càng gắp rồi nhấn GẮP QUÀ</p>
+      </div>
+
+      <div class="machine-base">
+        <div class="speaker" aria-hidden="true">▮ ▮ ▮ ▮ ▮</div>
+        <div class="coin-slot" aria-hidden="true"></div>
+        <div class="base-label">GOOD LUCK!</div>
+      </div>
+    </section>
+
+    <section id="prizePanel" class="prize-panel" hidden aria-live="polite">
+      <div class="sparkles" aria-hidden="true">✦ ✧ ★ ✧ ✦</div>
+      <p class="prize-kicker">BẠN GẮP ĐƯỢC MÓN QUÀ</p>
+      <h2 id="prizeTitle">BẠN ĐÃ NHẬN ĐƯỢC QUÀ!</h2>
+      <p id="prizeText"></p>
+      <button id="againBtn" class="grab-btn">CHƠI LẠI</button>
+    </section>
+
+    <footer>MADE WITH PIXEL LOVE · 20/10</footer>
+  </main>
+
+  <script src="game.js"></script>
 </body>
 </html>
